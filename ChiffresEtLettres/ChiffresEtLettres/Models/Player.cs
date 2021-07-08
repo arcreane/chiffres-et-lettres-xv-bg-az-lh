@@ -7,13 +7,13 @@ namespace ChiffresEtLettres
 {
     public class Player
     {
-        private String name;
-        private int score;
+        public string name { get; set; }
+        public int score { get; set; }
 
         public Player()
         {
         }
 
-        public Player myPlayer { get; set; }
+        
     }
 }
