@@ -26,20 +26,19 @@ namespace ChiffresEtLettres.Controllers
 
             int NbreConsonne = 10 - NbreVoyelle;
 
-            ViewBag.Consonne = NbreConsonne;
-            ViewBag.Voyelle = NbreVoyelle;
+            //ViewBag.Consonne = NbreConsonne;
+            //ViewBag.Voyelle = NbreVoyelle;
 
-            //Lettres m_lettre = new Lettres(NbreVoyelle, NbreConsonne);
+            Lettres m_lettre = new Lettres(NbreVoyelle, NbreConsonne);
 
             return View();
         }
 
         public ActionResult Confirm()
         {
-            int MotEntrer = Int32.Parse(Request.QueryString.Value.Substring(11).ToString().ToLower());
+            string MotEntrer = Request.QueryString.Value.Substring(11).ToString().ToLower();
 
-            string[] Alphabet = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-            "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+            
 
             return View();
         }
