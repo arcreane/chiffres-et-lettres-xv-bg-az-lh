@@ -3,17 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ChiffresEtLettres.Controllers
 {
     public class ChiffresController : Controller
     {
-        // GET: ChiffresController
-        public ActionResult Chiffre()
+        Chiffres NouveauChiffre = new Chiffres();
+        public ActionResult Index()
         {
-            Chiffres NouveauChiffre = new Chiffres();
-            string listNombre ="";
+            //NouveauChiffre = new Chiffres();
+            string listNombre = "";
             foreach (var item in NouveauChiffre.listChiffre)
             {
                 listNombre += item + ",";
@@ -23,74 +24,57 @@ namespace ChiffresEtLettres.Controllers
             ViewBag.NombreACalc = NouveauChiffre.ChiffreACalc;
             return View();
         }
-
-        // GET: ChiffresController/Details/5
-        public ActionResult Details(int id)
+        public void VerifCalc(string CalcUser)
         {
-            return View();
-        }
-
-        // GET: ChiffresController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ChiffresController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            List<int> sauvPourVerif = new List<int>();
+            sauvPourVerif = NouveauChiffre.listChiffre;
+            string[] test = { "+", "*", "-", "/" };
+            string[] ChiffreUsers = Regex.Split(CalcUser, @"\D+");
+            foreach (var item in ChiffreUsers)
             {
-                return RedirectToAction(nameof(Index));
+                if (sauvPourVerif.Contains(int.Parse(item)))
+                {
+                    sauvPourVerif.Remove(int.Parse(item));
+                }
+                else
+                {
+                    // traitement car l'utilisateur a utiliser un nombre non données par le programme
+                    MauvaitCalcul();
+                }
+
             }
-            catch
-            {
-                return View();
-            }
+            // Traitement quand l'utilisateur a utilisé le nombre a sa disposition
+            CalculeFormule(CalcUser);
         }
 
-        // GET: ChiffresController/Edit/5
-        public ActionResult Edit(int id)
+        public void CalculeFormule(string p_CalcUser)
         {
-            return View();
-        }
-
-        // POST: ChiffresController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
+            string[] elemCalc = { "(,),+,-,*,/" };
+             while (elemCalc.Any(p_CalcUser.Contains))
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                if (p_CalcUser.Contains("("))
+                {
+                    TraitementPar(p_CalcUser);
+                }
             }
         }
 
-        // GET: ChiffresController/Delete/5
-        public ActionResult Delete(int id)
+        private void TraitementPar(string p_CalcPar)
         {
-            return View();
+            int premièrePar = 0;
+            int DeuxiemePar = 0;
+            premièrePar = p_CalcPar.IndexOf("(");
+            DeuxiemePar = p_CalcPar.IndexOf(")");
+            while (DeuxiemePar > p_CalcPar.IndexOf("(", premièrePar) && p_CalcPar.IndexOf("(", premièrePar) != -1)
+            {
+                DeuxiemePar = p_CalcPar.IndexOf(")", DeuxiemePar);
+            }
+
         }
 
-        // POST: ChiffresController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public void MauvaitCalcul()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
         }
     }
 }

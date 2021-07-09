@@ -22,23 +22,6 @@ namespace ChiffresEtLettres
             ChiffreACalc = rand.Next(101, 1000);
         }
 
-        public bool VérifChiffre(string p_chiffresUser)
-        {
-            List<int> sauvPourVerif = listChiffre;
-            string[] ChiffreUsers = p_chiffresUser.Split(new char[] { '+', '*', '-', '/' });
-            foreach (var item in ChiffreUsers)
-            {
-                if (sauvPourVerif.Contains(int.Parse(item)))
-                {
-                    sauvPourVerif.Remove(int.Parse(item));
-                }
-                else
-                    return false;
-
-            }
-            return true;
-        }
-
 
     }
 }
