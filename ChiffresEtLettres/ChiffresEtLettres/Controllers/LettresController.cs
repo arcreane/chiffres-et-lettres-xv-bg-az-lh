@@ -29,7 +29,8 @@ namespace ChiffresEtLettres.Controllers
             ViewBag.Consonne = NbreConsonne;
             ViewBag.Voyelle = NbreVoyelle;
 
-            //Lettres m_lettre = new Lettres(NbreVoyelle, NbreConsonne);
+            Lettres m_lettre = new Lettres(NbreVoyelle, NbreConsonne);
+            m_lettre.genererTabLettres();
 
             return View();
         }
