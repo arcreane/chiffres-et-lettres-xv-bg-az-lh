@@ -13,7 +13,7 @@ namespace ChiffresEtLettres
     {
         public static void Main(string[] args)
         {
-            var l = new Lettres();
+            
 
             CreateHostBuilder(args).Build().Run();
         }
