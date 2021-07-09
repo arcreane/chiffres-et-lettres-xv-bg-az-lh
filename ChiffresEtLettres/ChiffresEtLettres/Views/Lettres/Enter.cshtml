@@ -1,4 +1,5 @@
-﻿<table class="table table-bordered">
+﻿
+<table class="table table-bordered">
     <tr style="text-align:center;">
         @foreach (var item in ViewBag.Proposition)
         {
@@ -16,6 +17,13 @@
     <input type="text" class="form-control" name="MotEntrer" value="" max="10" placeholder="Entrez votre mot ..." required />
 
     <br />
+
+    @foreach (var item in ViewBag.Proposition)
+    {
+        <th>
+            <input type="hidden" name="Lettre" value="@item" />
+        </th>
+    }
 
     <input type="submit" class="form-control btn btn-success" name="" value="valider" />
 

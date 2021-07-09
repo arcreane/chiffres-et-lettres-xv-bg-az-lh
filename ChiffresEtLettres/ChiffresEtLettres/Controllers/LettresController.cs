@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ChiffresEtLettres.Properties;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ChiffresEtLettres.Controllers
 {
@@ -22,7 +26,7 @@ namespace ChiffresEtLettres.Controllers
 
         public ActionResult Enter()
         {
-            int NbreVoyelle = Int32.Parse(Request.QueryString.Value.Substring(13).ToString());
+            int NbreVoyelle = Int32.Parse(HttpContext.Request.Query["NbreVoyelle"].ToString());
 
             int NbreConsonne = 10 - NbreVoyelle;
 
@@ -36,15 +40,83 @@ namespace ChiffresEtLettres.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public ActionResult Enter()
+        //{
+        //    return View();
+        //}
+
+
+
         public ActionResult Confirm()
         {
-            string MotEntrer = Request.QueryString.Value.Substring(11).ToString().ToLower();
+            string ChaineMot = HttpContext.Request.Query["Lettre"].ToString().Replace(",", "");
 
-            ViewBag.Enter = MotEntrer;
+            List<char> ChaineLettre = ChaineMot.ToList();
 
-            string[] Alphabet = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-            "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+            ViewBag.Enter = ChaineLettre;
 
+            string MotUtilisateur = HttpContext.Request.Query["MotEntrer"].ToString();
+
+            List<char> ChaineMotsUtilisateur = MotUtilisateur.ToList();
+
+            ViewBag.Mot = MotUtilisateur;
+
+            //for (int i = 0; i < ChaineMotsUtilisateur.Count; i++)
+            //{
+            //    for (int j = 0; j < ChaineLettre.Count; j++)
+            //    {
+            //        if (ChaineMotsUtilisateur[i] == ChaineLettre[j])
+            //        {
+            //            // Remplacement si la lettre est utiliser
+            //            ChaineLettre.RemoveAt(j);
+            //            break;
+            //        }
+            //        return RedirectToAction("Defaite");
+            //    }
+            //}
+
+            int flag;
+
+            for (int i = 0; i < ChaineMotsUtilisateur.Count; i++)
+            {
+                flag = 0;
+                for (int j = 0; j < ChaineLettre.Count; j++)
+                {
+                    if (ChaineMotsUtilisateur[i] == ChaineLettre[j])
+                    {
+                        // Remplacement si la lettre est utiliser
+                        ChaineLettre.RemoveAt(j);
+                        flag = 1;
+                    }
+                }
+                if (flag == 0)
+                {
+                    return RedirectToAction("Defaite");
+                }
+            }
+
+            var Dictionnaire = Resources.liste_francais.Split("\r\n");
+
+            foreach (var item in Dictionnaire)
+            {
+                if (item.Contains(MotUtilisateur))
+                {
+                    return RedirectToAction("Victoire");
+                }
+            }
+
+            return RedirectToAction("Defaite");
+        }
+
+
+        public ActionResult Victoire()
+        {
+            return View();
+        }
+
+        public ActionResult Defaite()
+        {
             return View();
         }
     }
