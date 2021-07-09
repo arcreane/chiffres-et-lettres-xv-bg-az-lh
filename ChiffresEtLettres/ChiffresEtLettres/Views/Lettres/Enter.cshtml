@@ -1,0 +1,30 @@
+﻿
+<table class="table table-bordered">
+    <tr style="text-align:center;">
+        @foreach (var item in ViewBag.Proposition)
+        {
+            <th>
+                @item
+            </th>
+        }
+    </tr>
+</table>
+
+<form action="/Lettres/Confirm" method="get">
+
+    <label class="col-form-label">Saisissez votre reponse (Entre 1 et 10 caractères en <bold style="color:red">Minuscule</bold> et sans <bold style="color:red">Accent</bold>)</label>
+
+    <input type="text" class="form-control" name="MotEntrer" value="" max="10" placeholder="Entrez votre mot ..." required />
+
+    <br />
+
+    @foreach (var item in ViewBag.Proposition)
+    {
+        <th>
+            <input type="hidden" name="Lettre" value="@item" />
+        </th>
+    }
+
+    <input type="submit" class="form-control btn btn-success" name="" value="valider" />
+
+</form>
