@@ -7,34 +7,21 @@ namespace ChiffresEtLettres
 {
     public class Chiffres
     {
-        private int nombreAlea;
-        private int nombreAlea_Un;
-        private int nombreAlea_Deux;
+        public List<int> listChiffre { get; set; }
+        public int ChiffreACalc { get; set; }
 
+        private int[] ChiffreDispo = { 1,2,3,4,5,6,7,8,9,10,25,50,75,100 };
         public Chiffres()
         {
+            listChiffre = new List<int>();
             Random rand = new Random();
-            int ChiffresRand = rand.Next(100);
-
-            int ChiffresRand_Un = ChiffresRand / 2;
-            int ChiffresRand_Deux = ChiffresRand / 2;
-
-            nombreAlea = ChiffresRand;
+            for (int i = 0; i < 7; i++)
+            {
+                listChiffre.Add(ChiffreDispo[rand.Next(0, ChiffreDispo.Length)]);
+            }
+            ChiffreACalc = rand.Next(101, 1000);
         }
 
-        public int GetNombreAlea()
-        {
-            return nombreAlea;
-        }
 
-        public int GetNombre_Un()
-        {
-            return nombreAlea_Un;
-        }
-
-        public int GetNombre_Deux()
-        {
-            return nombreAlea_Deux;
-        }
     }
 }
