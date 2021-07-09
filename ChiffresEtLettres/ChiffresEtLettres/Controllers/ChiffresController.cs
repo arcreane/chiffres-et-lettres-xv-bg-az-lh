@@ -26,6 +26,7 @@ namespace ChiffresEtLettres.Controllers
         }
         public void VerifCalc(string CalcUser)
         {
+            // Création d'un chiffre 
             List<int> sauvPourVerif = new List<int>();
             sauvPourVerif = NouveauChiffre.listChiffre;
             string[] test = { "+", "*", "-", "/" };
@@ -47,6 +48,7 @@ namespace ChiffresEtLettres.Controllers
             CalculeFormule(CalcUser);
         }
 
+        // Vue : Calcule
         public string CalculeFormule(string p_CalcUser)
         {
             string[] elemCalc = { "(,),+,-,*,/" };
@@ -70,16 +72,20 @@ namespace ChiffresEtLettres.Controllers
             return p_CalcUser;
         }
 
+        // Traitement Somme
         private string TraitementSomme(string p_CalcUser)
         {
-            
+            // Traitement de la somme calculer par l'utilisateur
+            return "0";   
         }
 
         private string TraitementProduit(string p_CalcUser)
         {
+            // Traitement des operateur choisit par l'utilisateur
             throw new NotImplementedException();
         }
 
+        // Traitement Parenthese
         private string TraitementPar(string p_CalcPar)
         {
             int premièrePar = p_CalcPar.IndexOf("(");
@@ -95,13 +101,25 @@ namespace ChiffresEtLettres.Controllers
             string ChaineCalcule = CalculeFormule(ChaineACalcule);
 
             return p_CalcPar.Replace(ChaineACalcule, ChaineCalcule);
-
-
         }
 
-        public void MauvaitCalcul()
+        // Défaite
+        public ActionResult MauvaitCalcul()
         {
+            // Retour vers defaite en cas d'echec
+            return RedirectToAction("Defaite");
+        }
 
+        // Victoire
+        public ActionResult Victoire()
+        {
+            return View();
+        }
+
+        // Défaite
+        public ActionResult Defaite()
+        {
+            return View();
         }
     }
 }
