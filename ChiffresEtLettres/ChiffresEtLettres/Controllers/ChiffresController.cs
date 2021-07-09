@@ -47,28 +47,60 @@ namespace ChiffresEtLettres.Controllers
             CalculeFormule(CalcUser);
         }
 
-        public void CalculeFormule(string p_CalcUser)
+        public string CalculeFormule(string p_CalcUser)
         {
             string[] elemCalc = { "(,),+,-,*,/" };
              while (elemCalc.Any(p_CalcUser.Contains))
             {
                 if (p_CalcUser.Contains("("))
                 {
-                    TraitementPar(p_CalcUser);
+                   p_CalcUser = TraitementPar(p_CalcUser);
                 }
+                else if (p_CalcUser.Contains("*") || p_CalcUser.Contains("/"))
+                {
+                    p_CalcUser = TraitementProduit(p_CalcUser);
+                }
+                else
+                {
+                    p_CalcUser = TraitementSomme(p_CalcUser);
+                    return p_CalcUser;
+                }
+            }
+
+            return p_CalcUser;
+        }
+
+        private string TraitementSomme(string p_CalcUser)
+        {
+            string[] elemCalc = { "+,-" };
+            while (elemCalc.Any(p_CalcUser.Contains))
+            {
+                
+
             }
         }
 
-        private void TraitementPar(string p_CalcPar)
+        private string TraitementProduit(string p_CalcUser)
         {
-            int premièrePar = 0;
-            int DeuxiemePar = 0;
-            premièrePar = p_CalcPar.IndexOf("(");
-            DeuxiemePar = p_CalcPar.IndexOf(")");
-            while (DeuxiemePar > p_CalcPar.IndexOf("(", premièrePar) && p_CalcPar.IndexOf("(", premièrePar) != -1)
+            throw new NotImplementedException();
+        }
+
+        private string TraitementPar(string p_CalcPar)
+        {
+            int premièrePar = p_CalcPar.IndexOf("(");
+            int DeuxiemePar = p_CalcPar.IndexOf(")");
+            int internPar = p_CalcPar.IndexOf("(", premièrePar + 1);
+            while (DeuxiemePar > internPar && internPar != -1)
             {
-                DeuxiemePar = p_CalcPar.IndexOf(")", DeuxiemePar);
+                DeuxiemePar = p_CalcPar.IndexOf(")", DeuxiemePar+1);
+                internPar = p_CalcPar.IndexOf("(", internPar + 1);
             }
+
+            string ChaineACalcule = p_CalcPar.Substring(premièrePar+1, DeuxiemePar - premièrePar);
+            string ChaineCalcule = CalculeFormule(ChaineACalcule);
+
+            return p_CalcPar.Replace(ChaineACalcule, ChaineCalcule);
+
 
         }
 
