@@ -72,12 +72,7 @@ namespace ChiffresEtLettres.Controllers
 
         private string TraitementSomme(string p_CalcUser)
         {
-            string[] elemCalc = { "+,-" };
-            while (elemCalc.Any(p_CalcUser.Contains))
-            {
-                
-
-            }
+            
         }
 
         private string TraitementProduit(string p_CalcUser)
